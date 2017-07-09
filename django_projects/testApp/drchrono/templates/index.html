@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %} Welcome | Sign in {% endblock %}
+
+{% block content %}
+    <header class="jumbotron">
+      <div class="container">
+        <div class="row row-header">
+              <div class="col-xs-12 col-sm-7">
+                  <h1>Welcome to Birthday Wisher!</h1>
+              </div>
+              <div class="col-xs-12 col-sm-3 col-sm-offset-1" style="border-left-style: solid; padding-left:70px;"><br>
+                  <p style="padding:5px; margin-left: 20px;">Powered by</p>
+                  {% load static %}
+                  <img src="{% static 'img/drchrono.png' %}" class="img-responsive"><br>
+                  <a class="btn btn-success" href="{% url 'social:begin' 'drchrono' %}">Login to begin</a>
+              </div>
+          </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="row row-content">
+        <div class="col-xs-12">
+          <h2>Let your patients know you care!</h2><br>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum<p>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

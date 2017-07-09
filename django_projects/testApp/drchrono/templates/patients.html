@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block js %}
+  <script type="text/javascript">
+    $(document).ready( function() {
+
+      // If generic message button is pressed
+      $('#msg_gen_btn').click(function(){
+        var emails = [];
+        {% for p in patients %}
+          {% if p.email %}
+            emails.push("{{p.email}}");
+          {% endif %}
+        {% endfor %}
+        $('#patientEmailAddress').val(emails);
+      });
+
+      //If custom message button is pressed
+      $('a[id*="msg_cus_btn"]').click(function(){
+        var email = [$(this).text()];
+        $('#patientEmailAddress').val(email);
+      });
+
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+  <header>
+      <h2>Wish your patients a Happy Birthday</h2>
+  </header>
+  <br><br><br>
+  <div class="container">
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Birthday</th>
+        <th>Email</th>
+      </tr>
+    {% for p in patients %}
+      <tr>
+          <td>{{p.first_name}} {{p.last_name}}</td>
+          <td>{{p.date_of_birth}}</td>
+          {% if p.email %}
+            <td><a id="msg_cus_btn-{{p.date_of_birth}}"  data-toggle="modal" data-target="#msg_modal">{{p.email}}</a></td>
+          {% else %}
+            <td>*Not registered*</td>
+          {% endif %}
+      </tr>
+    {% endfor %}
+  </table>
+  <br><br>
+  <button class="btn btn-success" id="msg_gen_btn" data-toggle="modal" data-target="#msg_modal" title="Click to send a generic Happy Birthday message to all the patients">Send generic message</button><br><br>
+  <p>*Click on individual patients to send a customized message</p>
+  </div>
+
+  <!---Hidden modal for a message--->
+  <div id="msg_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-body">
+          <form class="form-horizontal" role="form" action="/send_message" method="post">
+              {% csrf_token %}
+               {{form}}
+               <br>
+              <button type="submit" class="btn btn-primary">Send message <span class="fa fa-paper-plane"></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!---Modal ends--->
+{% endblock %}

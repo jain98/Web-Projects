@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <header>
+      <h2>Oops, seems like there's been a mistake!</h2>
+  </header>
+  <br>
+  <div class="container">
+    <div class="row row-content" style="padding: 100px; text-align:center;">
+      <h2>We couldn't find an appointment registered using the info you provided. You can speak to the receptionist, if you feel this message is in error
+        <br><br><strong>-- OR --</strong><br><br>You can try checking in again</h2>
+      <br>
+      <a class="btn btn-success" href="/check-in/" style="">Go back to check-in page</a>
+    </div>
+  </div>
+
+{% endblock %}

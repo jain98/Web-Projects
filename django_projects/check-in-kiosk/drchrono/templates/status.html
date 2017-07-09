@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block js %}
+  //Enable respective start buttons if patient status changes
+    <script language="javascript">
+      function enable_start_btn(){
+        var tbl = document.getElementById("status_table");
+        if (tbl != null) {
+            for (var i = 1; i < tbl.rows.length; i++) {
+                  if(tbl.rows[i].cells[1].innerHTML == "Arrived")
+                  {
+                    var id_parts = $(tbl.rows[i].cells[1]).attr('id').split('-');
+                    var start_btn_id = 'start_btn-'.concat(id_parts[1],'-',id_parts[2]);
+                    document.getElementById(start_btn_id).disabled = false;
+                  }
+            }
+        }
+      }
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready( function() {
+      //ajax for implementing start button
+        $('button[id*="start_btn"]').click(function(){
+          var id_parts = $(this).attr('id').split('-');
+          var end_btn_id = 'end_btn-'.concat(id_parts[1],'-',id_parts[2]);
+          $(this).attr("disabled","disabled");
+          document.getElementById(end_btn_id).disabled = false;
+
+          $.ajax({
+              type: "GET",
+              url: "/start",  // URL to your view that serves new info
+              data: {'pid': $(this).attr('id').split('-')[2]},
+          })
+          .done(function(response) {
+              console.log(response);
+          });
+        });
+
+        //ajax for implementing start button
+        $('button[id*="end_btn"]').click(function(){
+          $(this).attr("disabled","disabled");
+          $.ajax({
+              type: "GET",
+              url: "/end",  // URL to your view that serves new info
+              data: {'pid': $(this).attr('id').split('-')[2]},
+          })
+          .done(function(response) {
+              console.log(response);
+          });
+        });
+
+
+        //ajax to update status and wait times
+        setInterval(function() {
+            $.ajax({
+                type: "GET",
+                url: "/update",  // URL to your view that serves new info
+            })
+            .done(function(response) {
+                enable_start_btn();
+                $('#status_table').html(response);
+            });
+        }, 1000)
+
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+  <header>
+      <h2>Patient Status</h2>
+  </header>
+  <br>
+  <div class="container">
+      <table id="status_table" class="col-xs-10">
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Appointment Time</th>
+          <th>Wait Time</th>
+        </tr>
+        {% for a, t in appointments %}
+          <tr>
+              <td style="padding:15px;">{{a.first_name}} {{a.last_name}}</td>
+              <td id="status-{{a.time}}-{{a.pid}}" style="padding:15px;">{{a.get_status_display}}</td>
+              <td style="padding:15px;">{{a.time}}</td>
+              {% if a.status == 'INS' or a.status == 'COM' %}
+              <td style="padding:15px;">{{a.wait_time}}</td>
+              {% else %}
+              <td style="padding:15px;">{{t}}</td>
+              {% endif %}
+          </tr>
+        {% endfor %}
+      </table>
+      <table class="col-xs-2">
+        <tr>
+          <th>Start</th>
+          <th>End</th>
+        </tr>
+        {% for a, t in appointments %}
+          <tr id="{{a.time}}">
+              <td><button id="start_btn-{{a.time}}-{{a.pid}}" class="btn btn-primary" disabled>Start</button></td>
+              <td><button id="end_btn-{{a.time}}-{{a.pid}}" class="btn btn-primary" disabled>End</button></td>
+          </tr>
+        {% endfor %}
+      </table>
+  </div>
+
+{% endblock %}

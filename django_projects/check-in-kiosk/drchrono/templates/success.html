@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block js %}
+  <script type="text/javascript">
+    window.setTimeout(function(){
+      window.location.href = "/welcome";
+    }, 5000);
+  </script>
+{% endblock %}
+
+{% block content %}
+  <header>
+      <h2>Success!</h2>
+  </header>
+  <br>
+  <div class="container">
+    <div class="row row-content" style="padding: 100px; text-align:center;">
+      <h2>You have checked-in successfully! We'll let the doctor know!</h2>
+    </div>
+  </div>
+
+{% endblock %}

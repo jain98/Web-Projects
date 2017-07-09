@@ -1,0 +1,18 @@
+<tr>
+  <th>Name</th>
+  <th>Status</th>
+  <th>Appointment Time</th>
+  <th>Wait Time</th>
+</tr>
+{% for a, t in appointments %}
+  <tr>
+      <td style="padding:15px;">{{a.first_name}} {{a.last_name}}</td>
+      <td id="status-{{a.time}}-{{a.pid}}" style="padding:15px;">{{a.get_status_display}}</td>
+      <td style="padding:15px;">{{a.time}}</td>
+      {% if a.status == 'INS' or a.status == 'COM' %}
+      <td style="padding:15px;">{{a.wait_time}}</td>
+      {% else %}
+      <td style="padding:15px;">{{t}}</td>
+      {% endif %}
+  </tr>
+{% endfor %}

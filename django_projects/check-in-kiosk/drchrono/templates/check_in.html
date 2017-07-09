@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <header>
+      <h2>Check-in</h2>
+  </header>
+  <br>
+  <div class="container">
+    <div class="row row-content" style="padding: 100px;">
+      <div class="col-xs-12 col-sm-6">
+        <form role="form" action="/check-in/" method="post">
+            {% csrf_token %}
+             {{form.as_p}}
+             <br><br>
+            <button type="submit" name="check-in" class="btn btn-primary">Check-in&nbsp;<span class="fa fa-check"></button>
+      </div>
+      <div class="col-xs-12 col-sm-offset-1 col-sm-5" style="border-left-style: solid; padding: 50px; text-align:center;">
+        <h2>Check-in to let the doctor know you're here!</h2><br>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
